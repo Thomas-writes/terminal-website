@@ -1,0 +1,52 @@
+
+body {
+    background-color: black;
+    color: lime;
+    font-family: monospace;
+    padding: 20px;
+}
+#name {
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3rem; /* Large font for your name */
+    font-weight: bold;
+    color: #00FF00; /* Lime green text */
+    margin-bottom: 10px;
+}
+#website-text{
+    text-align: center;
+    margin-top: 50px;
+    font-family: 'Courier New', Courier, monospace; /* Terminal-like font */
+    font-size: 1.5rem; /* Slightly smaller text for the welcome message */
+    color: #00FF00; /* Lime green text */
+    font-family: 'Courier New', Courier, monospace; /* Terminal-like font */
+}
+#terminal {
+    width: 80%;
+    margin: auto;
+    background-color: black;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px lime;
+    height: 80%;
+}
+#output {
+    font-size: 16px;
+    overflow-y: auto;
+}
+#input-line {
+    font-size: 16px;
+    display: flex;
+}
+
+#input {
+    background: none;
+    border: none;
+    color: lime;
+    font-family: monospace;
+    font-size: 16px;
+    outline: none;
+    flex-grow: 1;
+    margin-left: 0%;
+}
