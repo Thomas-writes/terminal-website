@@ -130,7 +130,10 @@ input.addEventListener('keydown', (event) => {
                 }
             }else if (curDirectory == `/hobbies/`){
                 if (fileName === "workouts.md"){
-                    window.open('workouts.md', '_blank');
+                    fetch('./workouts.md')
+                        .then(response => response.text())
+                        .then(markdownText => openMarkdownInNewTab(markdownText));
+                    
                     output.appendChild(document.createElement('br'));
                 }
             }
@@ -140,7 +143,7 @@ input.addEventListener('keydown', (event) => {
                 if (fileName === "aboutme.txt"){
                     fetch('./aboutme.txt')
                     .then(response => response.text())
-                    //response.text() gets passed as aboutme
+                    //response.text() gets passed as out short for output - same for all cat calls
                     //response.text() has the text of the file
                     .then(out => {catFunc(out, fileName);
                     });
@@ -149,8 +152,6 @@ input.addEventListener('keydown', (event) => {
                 if (fileName === "workouts.md"){
                     fetch('./workouts.md')
                     .then(response => response.text())
-                    //response.text() gets passed as aboutme
-                    //response.text() has the text of the file
                     .then(out => {catFunc(out, fileName);
                     });
                 } 
@@ -183,3 +184,31 @@ function catFunc(out, fileName) {
     output.appendChild(outputtext);
     output.appendChild(document.createElement('br'));
 };
+
+function openMarkdownInNewTab(markdownText) {
+    let text = marked.parse(markdownText);
+    let htmlContent = 
+    `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Markdown Preview</title>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.css">
+            <style>
+                body {
+                    margin: auto;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                }
+            </style>
+        </head>
+        <body class="markdown-body">
+            ${text}
+        </body>
+        </html>`;
+    // for some reason it wasn't letting me write to a new tab so I used Blob
+    let blob = new Blob([htmlContent], { type: "text/html" });
+    let url = URL.createObjectURL(blob);
+    window.open(url);
+}
