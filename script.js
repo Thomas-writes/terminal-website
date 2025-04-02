@@ -11,7 +11,8 @@ input.addEventListener('focus', () => {
 });
 
 let mainDirectories = ["professional", "hobbies"]
-let professionalDirectories = ["aboutme", "resume.pdf", "music"];
+let professionalFiles = ["aboutme.txt", "resume.pdf", "projects.txt"];
+let hobbiesFiles = ["workouts.txt", "music.txt", "projects.txt"]
 let curDirectory = `/`;
 
 input.addEventListener('keydown', (event) => {
@@ -38,8 +39,12 @@ input.addEventListener('keydown', (event) => {
                     lsLine.textContent += `${mainDirectories[i]} `
                 }
             }else if (curDirectory == `/professional/`){
-                for (let i = 0; i < professionalDirectories.length; i++){
-                    lsLine.textContent += `${professionalDirectories[i]} `
+                for (let i = 0; i < professionalFiles.length; i++){
+                    lsLine.textContent += `${professionalFiles[i]} `
+                }
+            }else if (curDirectory == `/hobbies/`){
+                for (let i = 0; i < hobbiesFiles.length; i++){
+                    lsLine.textContent += `${hobbiesFiles[i]} `
                 }
             }
 
@@ -48,12 +53,22 @@ input.addEventListener('keydown', (event) => {
         }
         else if (userInput.startsWith('cd ')) {
             let dirName = userInput.slice(3).trim();
-            if (dirName === "") {
-                let errorOutput = document.createElement('div');
-                errorOutput.textContent = `Directory not found. Type 'help' for list of commands.`;
-                output.appendChild(document.createElement('br'));
-                output.appendChild(errorOutput)
-                output.appendChild(document.createElement('br'));
+            if (dirName === '..') {
+                if (curDirectory !== '/') {
+                    curDirectory = '/'
+                    let changeDirOutput = document.createElement('div');
+                    changeDirOutput.textContent = `Changed directory to ${curDirectory}`;
+                    output.appendChild(document.createElement('br'));
+                    output.appendChild(changeDirOutput);
+                    output.appendChild(document.createElement('br'));
+                    span.innerHTML = `$ ${curDirectory}`
+                }else {
+                    let errorOutput = document.createElement('div');
+                    errorOutput.textContent = `Already at the root directory.`;
+                    output.appendChild(document.createElement('br'));
+                    output.appendChild(errorOutput)
+                    output.appendChild(document.createElement('br'));
+                }
             }
             else if (curDirectory == `/`){
                 if (mainDirectories.includes(dirName)){
@@ -99,7 +114,11 @@ input.addEventListener('keydown', (event) => {
         else if (userInput.trim() === 'open resume.pdf' && curDirectory == `/professional/`) {
             window.open('resume.pdf', '_blank');
             output.appendChild(document.createElement('br'));
-        }   
+        }
+        else if (userInput.trim() === 'open workouts.txt' && curDirectory == `/hobbies/`) {
+            window.open('workouts.txt', '_blank');
+            output.appendChild(document.createElement('br'));
+        } 
         else {
             let unknownCommand = document.createElement('div');
             unknownCommand.textContent = `${userInput}: command not found Type 'help' for list of commands.`;
@@ -108,5 +127,5 @@ input.addEventListener('keydown', (event) => {
             output.appendChild(document.createElement('br'));
         }
         
-    } 
+    }
 });
