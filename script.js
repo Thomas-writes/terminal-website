@@ -12,7 +12,7 @@ input.addEventListener('focus', () => {
 
 let mainDirectories = ["professional", "hobbies"]
 let professionalFiles = ["resume.pdf", "aboutme.txt", "projects.txt"];
-let hobbiesFiles = ["workouts.txt", "music.txt", "projects.txt"]
+let hobbiesFiles = ["workouts.md", "music.txt", "projects.txt"]
 let curDirectory = `/`;
 
 input.addEventListener('keydown', (event) => {
@@ -106,7 +106,8 @@ input.addEventListener('keydown', (event) => {
                 "- cd [directory]: Change to a directory",
                 "- clear: Clear the terminal screen",
                 "- open [file]: open this file in a new tab",
-                "- help: Show this help message"
+                "- help: Show this help message",
+                "- cat: [file]: Open the file in terminal"
             ];
             
             commands.forEach(command => {
@@ -117,31 +118,46 @@ input.addEventListener('keydown', (event) => {
             
             output.appendChild(document.createElement('br'));
         }
-        else if (userInput.trim() === 'open resume.pdf' && curDirectory == `/professional/`) {
-            window.open('resume.pdf', '_blank');
-            output.appendChild(document.createElement('br'));
+        else if (userInput.startsWith('open')){
+            let fileName = userInput.slice(5).trim();
+            if (curDirectory == `/professional/`){
+                if (fileName === "resume.pdf"){
+                    window.open('resume.pdf', '_blank');
+                    output.appendChild(document.createElement('br'));
+                }else if (fileName === "aboutme.txt"){
+                    window.open('aboutme.txt', '_blank');
+                    output.appendChild(document.createElement('br'));
+                }
+            }else if (curDirectory == `/hobbies/`){
+                if (fileName === "workouts.md"){
+                    window.open('workouts.md', '_blank');
+                    output.appendChild(document.createElement('br'));
+                }
+            }
+        }else if (userInput.startsWith('cat')){
+            let fileName = userInput.slice(4).trim();
+            if (curDirectory == `/professional/`){
+                if (fileName === "aboutme.txt"){
+                    fetch('./aboutme.txt')
+                    .then(response => response.text())
+                    //response.text() gets passed as aboutme
+                    //response.text() has the text of the file
+                    .then(out => {catFunc(out, fileName);
+                    });
+                } 
+            }else if (curDirectory == `/hobbies/`){
+                if (fileName === "workouts.md"){
+                    fetch('./workouts.md')
+                    .then(response => response.text())
+                    //response.text() gets passed as aboutme
+                    //response.text() has the text of the file
+                    .then(out => {catFunc(out, fileName);
+                    });
+                } 
+            }
         }
-        else if (userInput.trim() === 'open workouts.txt' && curDirectory == `/hobbies/`) {
-            window.open('workouts.txt', '_blank');
-            output.appendChild(document.createElement('br'));
-        } 
-        else if (userInput.trim() === 'open aboutme.txt' && curDirectory == `/professional/`) {
-            fetch('./aboutme.txt')
-                .then(response => response.text())
-                //response.text() gets passed as aboutme
-                //response.text() has the text of the file
-                .then(aboutme => {
-                    output.appendChild(document.createElement('br'));
-                    let header = document.createElement('div');
-                    header.textContent = `This is the content of aboutme.txt:`;
-                    output.appendChild(header);
-                    output.appendChild(document.createElement('br'));
-                    let aboutmetext = document.createElement('div');
-                    aboutmetext.textContent = aboutme;
-                    aboutmetext.style.paddingLeft = "20px";
-                    output.appendChild(aboutmetext);
-                    output.appendChild(document.createElement('br'));
-                });
+        
+            
             
         }
         else {
@@ -153,4 +169,17 @@ input.addEventListener('keydown', (event) => {
         }
         
     }
-});
+);
+
+function catFunc(out, fileName) {
+    output.appendChild(document.createElement('br'));
+    let header = document.createElement('div');
+    header.textContent = `This is the content of ${fileName}:`;
+    output.appendChild(header);
+    output.appendChild(document.createElement('br'));
+    let outputtext = document.createElement('div');
+    outputtext.innerText = out;
+    outputtext.style.paddingLeft = "20px";
+    output.appendChild(outputtext);
+    output.appendChild(document.createElement('br'));
+};
