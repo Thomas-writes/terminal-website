@@ -11,14 +11,14 @@ input.addEventListener('focus', () => {
 });
 
 let mainDirectories = ["professional", "hobbies"]
-let professionalFiles = ["aboutme.txt", "resume.pdf", "projects.txt"];
+let professionalFiles = ["resume.pdf", "aboutme.txt", "projects.txt"];
 let hobbiesFiles = ["workouts.txt", "music.txt", "projects.txt"]
 let curDirectory = `/`;
 
 input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
         event.preventDefault();
-        
+    
         let userInput = input.value.trim();
         let newLine = document.createElement('div');
         newLine.textContent = `$ ${curDirectory}${userInput}`;
@@ -51,7 +51,7 @@ input.addEventListener('keydown', (event) => {
             output.appendChild(lsLine)
             output.appendChild(document.createElement('br'));
         }
-        else if (userInput.startsWith('cd ')) {
+        else if (userInput.startsWith('cd')) {
             let dirName = userInput.slice(3).trim();
             if (dirName === '..') {
                 if (curDirectory !== '/') {
@@ -87,6 +87,12 @@ input.addEventListener('keydown', (event) => {
                     output.appendChild(errorOutput)
                     output.appendChild(document.createElement('br'));
                 }
+            }else{
+                let errorOutput = document.createElement('div');
+                errorOutput.textContent = `Directory not found. Type 'help' for list of commands.`;
+                output.appendChild(document.createElement('br'));
+                output.appendChild(errorOutput)
+                output.appendChild(document.createElement('br'));
             }
         }
         else if (userInput === "help") {
@@ -119,6 +125,25 @@ input.addEventListener('keydown', (event) => {
             window.open('workouts.txt', '_blank');
             output.appendChild(document.createElement('br'));
         } 
+        else if (userInput.trim() === 'open aboutme.txt' && curDirectory == `/professional/`) {
+            fetch('./aboutme.txt')
+                .then(response => response.text())
+                //response.text() gets passed as aboutme
+                //response.text() has the text of the file
+                .then(aboutme => {
+                    output.appendChild(document.createElement('br'));
+                    let header = document.createElement('div');
+                    header.textContent = `This is the content of aboutme.txt:`;
+                    output.appendChild(header);
+                    output.appendChild(document.createElement('br'));
+                    let aboutmetext = document.createElement('div');
+                    aboutmetext.textContent = aboutme;
+                    aboutmetext.style.paddingLeft = "20px";
+                    output.appendChild(aboutmetext);
+                    output.appendChild(document.createElement('br'));
+                });
+            
+        }
         else {
             let unknownCommand = document.createElement('div');
             unknownCommand.textContent = `${userInput}: command not found Type 'help' for list of commands.`;

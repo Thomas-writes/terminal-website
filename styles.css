@@ -20,7 +20,6 @@ body {
     font-family: 'Courier New', Courier, monospace; 
     font-size: 1.5rem; 
     color: #00FF00; 
-    font-family: 'Courier New', Courier, monospace; 
 }
 #helper-text{
     font-size: 1.2rem;
@@ -41,8 +40,11 @@ body {
 #input-line {
     font-size: 16px;
     display: flex;
+    overflow-x: hidden;
 }
-
+#mainspan {
+    white-space: nowrap;
+}
 #input {
     background: none;
     border: none;
