@@ -115,7 +115,7 @@ input.addEventListener('keydown', (event) => {
             let fileName = userInput.slice(5).trim();
             if (curDirectory == `/professional/`){
                 if (fileName === "resume.md"){
-                    fetch('./resume.md')
+                    fetch('./Resume.md')
                         .then(response => response.text())
                         .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
@@ -145,7 +145,7 @@ input.addEventListener('keydown', (event) => {
                     });
                 }
                 else if (fileName === "resume.md"){
-                    fetch('./resume.md')
+                    fetch('./Resume.md')
                     .then(response => response.text())
                     .then(out => {catFunc(out, fileName);
                     });
