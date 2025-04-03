@@ -11,8 +11,8 @@ input.addEventListener('focus', () => {
 });
 
 let mainDirectories = ["professional", "hobbies"]
-let professionalFiles = ["resume.md", "aboutme.txt", "projects.txt"];
-let hobbiesFiles = ["workouts.md", "music.txt", "projects.txt"]
+let professionalFiles = ["resume.md", "projects.md", "aboutme.txt"];
+let hobbiesFiles = ["workouts.md"]
 let curDirectory = `/`;
 let span = document.getElementById('mainspan');
 
@@ -119,8 +119,15 @@ input.addEventListener('keydown', (event) => {
                         .then(response => response.text())
                         .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
-                }else if (fileName === "aboutme.txt"){
+                }
+                else if (fileName === "aboutme.txt"){
                     window.open('aboutme.txt', '_blank');
+                    output.appendChild(document.createElement('br'));
+                }
+                else if (fileName === "projects.md"){
+                    fetch('./projects.md')
+                        .then(response => response.text())
+                        .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
                 }
             }else if (curDirectory == `/hobbies/`){
@@ -146,6 +153,12 @@ input.addEventListener('keydown', (event) => {
                 }
                 else if (fileName === "resume.md"){
                     fetch('./Resume.md')
+                    .then(response => response.text())
+                    .then(out => {catFunc(out, fileName);
+                    });
+                }
+                else if (fileName === "projects.md"){
+                    fetch('./projects.md')
                     .then(response => response.text())
                     .then(out => {catFunc(out, fileName);
                     });
