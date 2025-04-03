@@ -143,6 +143,12 @@ input.addEventListener('keydown', (event) => {
                     //response.text() has the text of the file
                     .then(out => {catFunc(out, fileName);
                     });
+                }
+                else if (fileName === "resume.md"){
+                    fetch('./resume.md')
+                    .then(response => response.text())
+                    .then(out => {catFunc(out, fileName);
+                    });
                 } 
             }else if (curDirectory == `/hobbies/`){
                 if (fileName === "workouts.md"){
