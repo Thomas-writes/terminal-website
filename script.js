@@ -11,7 +11,7 @@ input.addEventListener('focus', () => {
 });
 
 let mainDirectories = ["professional", "hobbies"]
-let professionalFiles = ["resume.pdf", "aboutme.txt", "projects.txt"];
+let professionalFiles = ["resume.md", "aboutme.txt", "projects.txt"];
 let hobbiesFiles = ["workouts.md", "music.txt", "projects.txt"]
 let curDirectory = `/`;
 let span = document.getElementById('mainspan');
@@ -114,8 +114,10 @@ input.addEventListener('keydown', (event) => {
         else if (userInput.startsWith('open')){
             let fileName = userInput.slice(5).trim();
             if (curDirectory == `/professional/`){
-                if (fileName === "resume.pdf"){
-                    window.open('resume.pdf', '_blank');
+                if (fileName === "resume.md"){
+                    fetch('./resume.md')
+                        .then(response => response.text())
+                        .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
                 }else if (fileName === "aboutme.txt"){
                     window.open('aboutme.txt', '_blank');
@@ -126,7 +128,6 @@ input.addEventListener('keydown', (event) => {
                     fetch('./workouts.md')
                         .then(response => response.text())
                         .then(markdownText => openMarkdownInNewTab(markdownText));
-                    
                     output.appendChild(document.createElement('br'));
                 }
             }
