@@ -14,6 +14,7 @@ let mainDirectories = ["professional", "hobbies"]
 let professionalFiles = ["resume.pdf", "aboutme.txt", "projects.txt"];
 let hobbiesFiles = ["workouts.md", "music.txt", "projects.txt"]
 let curDirectory = `/`;
+let span = document.getElementById('mainspan');
 
 input.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -58,16 +59,12 @@ input.addEventListener('keydown', (event) => {
                     curDirectory = '/'
                     let changeDirOutput = document.createElement('div');
                     changeDirOutput.textContent = `Changed directory to ${curDirectory}`;
-                    output.appendChild(document.createElement('br'));
-                    output.appendChild(changeDirOutput);
-                    output.appendChild(document.createElement('br'));
+                    itemWithBr(changeDirOutput);
                     span.innerHTML = `$ ${curDirectory}`
                 }else {
                     let errorOutput = document.createElement('div');
                     errorOutput.textContent = `Already at the root directory.`;
-                    output.appendChild(document.createElement('br'));
-                    output.appendChild(errorOutput)
-                    output.appendChild(document.createElement('br'));
+                    itemWithBr(errorOutput);
                 }
             }
             else if (curDirectory == `/`){
@@ -75,24 +72,17 @@ input.addEventListener('keydown', (event) => {
                     curDirectory = `${curDirectory}${dirName}/`;
                     let changeDirOutput = document.createElement('div');
                     changeDirOutput.textContent = `Changed directory to ${curDirectory}`;
-                    output.appendChild(document.createElement('br'));
-                    output.appendChild(changeDirOutput);
-                    output.appendChild(document.createElement('br'));
-                    span = document.getElementById('mainspan');
+                    itemWithBr(changeDirOutput);
                     span.innerHTML = `$ ${curDirectory}`
                 }else{
                     let errorOutput = document.createElement('div');
                     errorOutput.textContent = `Directory not found. Type 'help' for list of commands.`;
-                    output.appendChild(document.createElement('br'));
-                    output.appendChild(errorOutput)
-                    output.appendChild(document.createElement('br'));
+                    itemWithBr(errorOutput);
                 }
             }else{
                 let errorOutput = document.createElement('div');
                 errorOutput.textContent = `Directory not found. Type 'help' for list of commands.`;
-                output.appendChild(document.createElement('br'));
-                output.appendChild(errorOutput)
-                output.appendChild(document.createElement('br'));
+                itemWithBr(errorOutput);
             }
         }
         else if (userInput === "help") {
@@ -164,9 +154,7 @@ input.addEventListener('keydown', (event) => {
         else {
             let unknownCommand = document.createElement('div');
             unknownCommand.textContent = `${userInput}: command not found Type 'help' for list of commands.`;
-            output.appendChild(document.createElement('br'));
-            output.appendChild(unknownCommand);
-            output.appendChild(document.createElement('br'));
+            itemWithBr(unknownCommand);
         }
         
     }
@@ -211,4 +199,10 @@ function openMarkdownInNewTab(markdownText) {
     let blob = new Blob([htmlContent], { type: "text/html" });
     let url = URL.createObjectURL(blob);
     window.open(url);
-}
+};
+
+function itemWithBr(element){
+    output.appendChild(document.createElement('br'));
+    output.appendChild(element);
+    output.appendChild(document.createElement('br'));
+};
