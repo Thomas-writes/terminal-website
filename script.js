@@ -26,7 +26,7 @@ input.addEventListener('keydown', (event) => {
         output.appendChild(newLine);
 
         input.value = '';
-
+        //clear function
         if (userInput.trim() === 'clear') {
             output.innerHTML = '';
         }
@@ -49,7 +49,6 @@ input.addEventListener('keydown', (event) => {
                     lsLine.textContent += `${hobbiesFiles[i]} `
                 }
             }
-
             output.appendChild(lsLine)
             output.appendChild(document.createElement('br'));
         }
