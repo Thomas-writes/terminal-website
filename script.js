@@ -182,8 +182,11 @@ function catFunc(out, fileName) {
 
 function openMarkdownInNewTab(markdownText) {
     let text = marked.parse(markdownText);
-    let htmlContent = 
-    `<!DOCTYPE html>
+    let newTab = window.open();
+    
+    if (newTab) {
+        newTab.document.write(`
+        <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
@@ -201,12 +204,11 @@ function openMarkdownInNewTab(markdownText) {
         <body class="markdown-body">
             ${text}
         </body>
-        </html>`;
-    // for some reason it wasn't letting me write to a new tab so I used Blob
-    let blob = new Blob([htmlContent], { type: "text/html" });
-    let url = URL.createObjectURL(blob);
-    window.open(url);
-};
+        </html>`);
+        newTab.document.close();
+    }
+}
+
 
 function itemWithBr(element){
     output.appendChild(document.createElement('br'));
