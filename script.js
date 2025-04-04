@@ -130,13 +130,23 @@ input.addEventListener('keydown', (event) => {
                         .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
                 }
-            }else if (curDirectory == `/hobbies/`){
+                else{
+                    errorOutput();
+                }
+            }
+            else if (curDirectory == `/hobbies/`){
                 if (fileName === "workouts.md"){
                     fetch('./workouts.md')
                         .then(response => response.text())
                         .then(markdownText => openMarkdownInNewTab(markdownText));
                     output.appendChild(document.createElement('br'));
                 }
+                else{
+                    errorOutput();
+                }
+            }
+            else{
+                errorOutput();
             }
         }
         //cat function
@@ -162,22 +172,30 @@ input.addEventListener('keydown', (event) => {
                     .then(response => response.text())
                     .then(out => {catFunc(out, fileName);
                     });
-                } 
+                }
+                else{
+                    errorOutput();
+                }
             }else if (curDirectory == `/hobbies/`){
                 if (fileName === "workouts.md"){
                     fetch('./workouts.md')
                     .then(response => response.text())
                     .then(out => {catFunc(out, fileName);
                     });
-                } 
+                }
+                else{
+                    errorOutput();
+                }
+            }else{
+                errorOutput();
             }
         }
+        else {
+            let unknownCommand = document.createElement('div');
+            unknownCommand.textContent = `${userInput}: command not found Type 'help' for a list of commands.`;
+            itemWithBr(unknownCommand);
+        }    
     }
-    else {
-        let unknownCommand = document.createElement('div');
-        unknownCommand.textContent = `${userInput}: command not found Type 'help' for list of commands.`;
-        itemWithBr(unknownCommand);
-    }    
 });
 
 function catFunc(out, fileName) {
@@ -228,3 +246,11 @@ function itemWithBr(element){
     output.appendChild(element);
     output.appendChild(document.createElement('br'));
 };
+
+function errorOutput(){
+    let errorText = document.createElement('div');
+    errorText.innerHTML = `File not found. Type 'help' for a list of commands and 'ls' for files and directories`;
+    output.appendChild(document.createElement('br'));
+    output.appendChild(errorText);
+    output.appendChild(document.createElement('br'));
+}
