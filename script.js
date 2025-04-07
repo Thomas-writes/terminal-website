@@ -1,6 +1,11 @@
+//global variables
 const terminal = document.getElementById('terminal');
 const input = document.getElementById('input');
 const output = document.getElementById('output');
+//used for tab-complete
+let maxKeys = []
+let autoCompleteIndex = 0
+let original_input = ""
 
 terminal.addEventListener('click', () => {
     input.focus();
@@ -195,6 +200,49 @@ input.addEventListener('keydown', (event) => {
             unknownCommand.textContent = `${userInput}: command not found Type 'help' for a list of commands.`;
             itemWithBr(unknownCommand);
         }    
+    }else if (event.key == "Tab"){
+        event.preventDefault()
+
+        let curInput = input.value;
+        let matchingObject = {};
+        let matchCount = 0;
+        let listOfCommands = ["ls", "cd", "cat", "help", "open", "clear"];
+        let curInputList = curInput.split(" ")
+        if (maxKeys.length > 0){
+            input.value = maxKeys[autoCompleteIndex];
+            //mod sends it back to 0
+            autoCompleteIndex = (autoCompleteIndex + 1) % maxKeys.length;
+        }
+        if (curInputList.length == 1){
+            for (let i = 0; i < listOfCommands.length; i++){
+                matchCount = 0;
+                for (let j = 0; j < listOfCommands[i].length; j++){
+                    if (j < curInput.length){
+                        if (listOfCommands[i][j] == curInput[j]){
+                            matchCount++;
+                        }else {
+                            break;
+                        }
+                    }
+                }
+                matchingObject[listOfCommands[i]] = matchCount;
+            }
+            //thank you to the person who posted this online - finds max value and gives that key
+            let maxValue = Math.max(...Object.values(matchingObject));
+            if (maxValue == 0){
+                maxKeys = [];
+                autoCompleteIndex = 0;
+                return;
+            }
+            if (maxKeys.length > 0) {
+                return;
+            }
+            maxKeys = Object.keys(matchingObject).filter(key => matchingObject[key] === maxValue);
+            console.log(maxKeys);
+            
+            input.value = maxKeys[0];
+            autoCompleteIndex = 1;
+        }
     }
 });
 
@@ -222,7 +270,7 @@ function openMarkdownInNewTab(markdownText) {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Markdown Preview</title>
+            <title>Markdown</title>
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.css">
             <style>
                 body {
